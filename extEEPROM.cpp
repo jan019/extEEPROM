@@ -182,7 +182,8 @@ byte extEEPROM::read(unsigned long addr, byte *values, unsigned int nBytes)
         rxStatus = communication->endTransmission();
         if (rxStatus != 0) return rxStatus;        //read error
 
-        communication->requestFrom(ctrlByte, nRead);
+        communication->requestFrom(static_cast<int>(ctrlByte), static_cast<int>(nRead)
+        );
         for (byte i=0; i<nRead; i++) values[i] = communication->read();
 
         addr += nRead;          //increment the EEPROM address
@@ -210,7 +211,7 @@ int extEEPROM::read(unsigned long addr)
 {
     uint8_t data;
     int ret;
-    
+
     ret = read(addr, &data, 1);
     return ret == 0 ? data : -ret;
 }
